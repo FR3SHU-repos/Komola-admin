@@ -41,21 +41,32 @@ credentials.
 | Locations | Create, edit, enable/disable, and safely archive platform locations | `GET/POST/PATCH/DELETE /api/v1/admin/locations` |
 | Privacy operations | Claim, verify, complete, or reject requests; approved erasure uses the governed anonymization workflow | `GET/PATCH /api/v1/admin/privacy/requests` |
 | Analytics | Period-filtered platform sales, reward, organization, locality, outbox, and consented-fact aggregates | `GET /api/v1/admin/overview`, `/admin/analytics/sales`, `/admin/analytics/rewards` |
-| Operations | Cross-organization views of listed products by category, seller business locations by address/PIN, POS registers, seller transaction totals, and buyer wallet balances | `GET /api/v1/admin/operations/*` |
+| Operations | Cross-organization views of listed products by category, seller business locations by address/PIN, POS registers, seller transaction totals, and buyer wallet balances, with shared filters and bounded pagination | `GET /api/v1/admin/operations/*` |
 | Rewardor rewards | Read-only list of Rewardor-created campaigns with status, locality, point value, and claim totals | `GET /api/v1/admin/reward-campaigns` |
+| Reconciliation | Read-only integrity checks for sales, payments, inventory, reward transfers, and stalled outbox retries | `GET /api/v1/admin/reconciliation` |
+| Audit | Minimized, filterable platform audit-event view without raw before/after payloads | `GET /api/v1/admin/audit-events` |
+| Alerts | Read-only privacy-SLA, outbox, and analytics-ingestion alert view | `GET /api/v1/admin/alerts` |
+| Fraud signals | Explainable aggregate review signals for self-referrals, refunds, velocity, and claim bursts | `GET /api/v1/admin/fraud-signals` |
+| Exports | Bounded CSV reports for approved operational datasets | `GET /api/v1/admin/exports/{report}` |
+| Performance | Seller and Rewardor period aggregates with bounded filters and pagination | `GET /api/v1/admin/performance/sellers`, `/admin/performance/rewardors` |
+| Inventory analytics | Stock health, low/out-of-stock items, movement volume, and fast-moving products | `GET /api/v1/admin/inventory/analytics` |
+| Data health | Analytics watermark, outbox, PostgreSQL pool, and Redis cache snapshot | `GET /api/v1/admin/freshness` |
 
 All mutations require an authenticated platform admin and explicit UI intent.
 The UI is not an authorization boundary; the Go API must enforce every rule.
 
 ## Required backend follow-up
 
-The following routes are deliberately listed as planned work rather than
-pretending the current tenant-scoped APIs are global admin APIs:
+The following capabilities remain planned because they require additional
+workflow design and, for durable state, an explicitly approved database
+migration:
 
 - `GET /api/v1/admin/organizations/:id/summary`
-- `GET /api/v1/admin/audit-events`
 - platform-wide Rewardor campaign moderation and claim exception routes
 - POS operational health, sales, inventory, and outbox views
+- least-privilege platform-admin roles and permissions
+- scheduled reports and report-run history
+- notification preferences, escalation rules, and delivery history
 
 Each new route should define its authorization, pagination, aggregation grain,
 PII minimization, audit event, and performance budget before implementation.
@@ -105,12 +116,14 @@ operator confirmation under the shared project workflow.
 - Platform location control.
 - Privacy request queue.
 - Privacy-safe analytics dashboard with period selection, KPI cards, daily activity, and top organization/campaign/product tables.
+- Operations drill-down tables with URL-persisted filters and server-side pagination.
+- Reconciliation dashboard with severity/type filters and safe operational references.
+- Audit, alerts, fraud-signal, export, performance, inventory, and freshness pages.
 
 ### Phase 2 — backend contracts
 
-- Global admin overview and sales/reward analytics read endpoints.
+- Global admin overview, sales/reward analytics, operations, reconciliation, audit, alert, fraud, export, performance, inventory, and freshness read endpoints.
 - Platform-admin authorization and OpenAPI documentation for aggregate routes.
-- Add audit-event query endpoint with pagination and filters.
 - Add organization summary and operational health endpoints.
 - Add tests for platform-admin authorization and cross-tenant isolation.
 
@@ -119,7 +132,8 @@ operator confirmation under the shared project workflow.
 - Rewardor campaign moderation and claim exception handling.
 - POS sales/inventory/outbox monitoring.
 - Rate-limit, worker, and cache observability.
-- Export jobs with DPDP purpose and retention controls.
+- Durable export-request audit records and short-lived export delivery with
+  DPDP purpose and retention controls.
 
 ### Phase 4 — production hardening
 

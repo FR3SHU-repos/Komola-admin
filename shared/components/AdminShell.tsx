@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BarChart3, Boxes, Building2, ChevronRight, Gift, Globe2, LayoutDashboard, LogOut, ShieldCheck, UserRoundCog } from "lucide-react";
+import { Activity, AlertTriangle, BarChart3, Boxes, Building2, ChevronRight, Download, FileClock, Gift, Globe2, LayoutDashboard, LineChart, LogOut, PackageSearch, ShieldAlert, ShieldCheck, UserRoundCog, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { adminBootstrap, type AdminBootstrap } from "@/shared/lib/api/admin";
 import { createAuthBrowserClient } from "@/shared/lib/supabase/auth-client";
@@ -10,10 +10,19 @@ import { createAuthBrowserClient } from "@/shared/lib/supabase/auth-client";
 const coreNav = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/organizations", label: "Organizations", icon: Building2 },
+  { href: "/buyers", label: "Buyers", icon: Users },
   { href: "/locations", label: "Locations", icon: Globe2 },
   { href: "/privacy", label: "Privacy operations", icon: ShieldCheck },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/operations", label: "Operations", icon: Boxes },
+  { href: "/reconciliation", label: "Reconciliation", icon: AlertTriangle },
+  { href: "/audit", label: "Audit log", icon: FileClock },
+  { href: "/alerts", label: "Alerts", icon: ShieldAlert },
+  { href: "/fraud", label: "Fraud signals", icon: ShieldAlert },
+  { href: "/exports", label: "Exports", icon: Download },
+  { href: "/performance", label: "Performance", icon: LineChart },
+  { href: "/inventory", label: "Inventory analytics", icon: PackageSearch },
+  { href: "/freshness", label: "Data health", icon: Activity },
   { href: "/rewardor-rewards", label: "Rewardor rewards", icon: Gift },
 ];
 

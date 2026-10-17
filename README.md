@@ -16,14 +16,37 @@ Implemented with the current API:
 - Seller/Rewardor organization access review: approve, reject, suspend.
 - Platform location enable/disable control.
 - Privacy request queue with identity verification and resolution actions.
-- Analytics readiness page that distinguishes available organization-scoped
-  analytics from global admin endpoints that still need backend exposure.
+- Period-filtered platform analytics with weekly, monthly, and yearly detail
+  pages.
+- Cross-organization operations tables for products, categories, registers,
+  business locations, sellers, and buyer wallet aggregates.
+- Shared operations filters, URL-persisted views, and server-side pagination.
+- Read-only reconciliation checks for sales, payments, inventory, rewards, and
+  stalled outbox retries.
+- Read-only admin audit log, operational alerts, fraud/abuse review signals,
+  and bounded CSV exports for sales, sellers, products, and buyer wallet
+  aggregates.
+- Clickable inventory category drill-downs with completed-sale product lines,
+  seller and locality context, line value, purchase date/time, and masked
+  buyer identity links.
 
-The current Go API exposes global admin operations for seller applications,
-locations, and privacy requests. Global Rewardor campaign moderation, POS
-catalogue/inventory controls, sales exploration, and cross-organization
-analytics require dedicated platform-admin API endpoints before this console
-can safely manage them.
+The implemented and planned admin capabilities are documented in
+[`docs/ADMIN-FEATURE-ROADMAP.md`](docs/ADMIN-FEATURE-ROADMAP.md). The roadmap
+includes the delivered phases plus exports, fraud review, operational alerts,
+audit logs, role-based access, and privacy-safe reporting.
+
+The current Go API exposes platform-admin operations for seller applications,
+locations, privacy requests, analytics, operations tables, Rewardor campaign
+read models, reconciliation, audit events, alerts, fraud signals, and exports.
+Persistent alert acknowledgement, export-request audit records, and fraud
+review decisions remain planned workflows.
+
+The complete implemented route inventory is maintained in
+[`../go-api-backend/docs/admin-platform-api.md`](../go-api-backend/docs/admin-platform-api.md).
+The machine-readable contract is
+[`../go-api-backend/openapi/openapi.yaml`](../go-api-backend/openapi/openapi.yaml)
+and is also served by the API at `/openapi.yaml`; Swagger UI is available at
+`/docs`.
 
 ## Local development
 
@@ -44,6 +67,24 @@ npm run dev
 
 The signed-in Supabase user must exist in `identity.platform_admins`; ordinary
 seller, buyer, and Rewardor accounts are denied by the Go API.
+
+## Verification
+
+From the repository roots:
+
+```bash
+# Go API
+GOCACHE=/tmp/komola-go-build go test ./...
+jq empty openapi/openapi.yaml
+
+# Admin app
+npm run typecheck
+npm run build
+npm run lint
+```
+
+Lint currently reports warnings only. No database migration or direct database
+mutation is part of the admin analytics work documented here.
 
 ## Source of truth
 
