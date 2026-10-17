@@ -28,8 +28,10 @@ Implemented with the current API:
 - Seller and category labels across dashboard, analytics, inventory, buyer
   footprints, and seller views link to their corresponding detail pages.
 - Buyer detail pages show category-tagged purchase lines, scrollable purchase
-  history with a maximum of ten transactions per page, and a local-time
-  weekday-by-hour purchase heatmap.
+  history with a maximum of ten transactions per page, a local-time
+  weekday-by-hour purchase heatmap, and clickable product/category purchase
+  insights. Category-pair drill-downs show the matching baskets and their
+  product, seller, location, amount, and date/time details.
 - Read-only reconciliation checks for sales, payments, inventory, rewards, and
   stalled outbox retries.
 - Read-only admin audit log, operational alerts, fraud/abuse review signals,
