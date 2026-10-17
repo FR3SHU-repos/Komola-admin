@@ -21,6 +21,11 @@ Implemented with the current API:
 - Cross-organization operations tables for products, categories, registers,
   business locations, sellers, and buyer wallet aggregates.
 - Shared operations filters, URL-persisted views, and server-side pagination.
+- Seller names in operations tables link to a full seller snapshot page covering
+  profile, locations, registers, catalogue/pricing, stock, referrals, and sales.
+- Buyer detail pages show category-tagged purchase lines, scrollable purchase
+  history with a maximum of ten transactions per page, and a local-time
+  weekday-by-hour purchase heatmap.
 - Read-only reconciliation checks for sales, payments, inventory, rewards, and
   stalled outbox retries.
 - Read-only admin audit log, operational alerts, fraud/abuse review signals,

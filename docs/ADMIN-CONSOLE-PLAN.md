@@ -41,7 +41,8 @@ credentials.
 | Locations | Create, edit, enable/disable, and safely archive platform locations | `GET/POST/PATCH/DELETE /api/v1/admin/locations` |
 | Privacy operations | Claim, verify, complete, or reject requests; approved erasure uses the governed anonymization workflow | `GET/PATCH /api/v1/admin/privacy/requests` |
 | Analytics | Period-filtered platform sales, reward, organization, locality, outbox, and consented-fact aggregates | `GET /api/v1/admin/overview`, `/admin/analytics/sales`, `/admin/analytics/rewards` |
-| Operations | Cross-organization views of listed products by category, seller business locations by address/PIN, POS registers, seller transaction totals, and buyer wallet balances, with shared filters and bounded pagination | `GET /api/v1/admin/operations/*` |
+| Operations | Cross-organization views of listed products by category, seller business locations by address/PIN, POS registers, seller transaction totals, and buyer wallet balances, with shared filters and bounded pagination. Seller names link to a full seller snapshot covering profile, locations, registers, catalogue/pricing, stock, referrals, and sales. | `GET /api/v1/admin/operations/*` |
+| Buyer detail | Buyer profiles include masked contact details, wallet state, category-tagged purchase lines, seller/locality context, ten transactions per page, and a local-time weekday-by-hour purchase heatmap. | `GET /api/v1/admin/operations/buyers/{personID}`, `/admin/operations/buyers/{personID}/insights` |
 | Rewardor rewards | Read-only list of Rewardor-created campaigns with status, locality, point value, and claim totals | `GET /api/v1/admin/reward-campaigns` |
 | Reconciliation | Read-only integrity checks for sales, payments, inventory, reward transfers, and stalled outbox retries | `GET /api/v1/admin/reconciliation` |
 | Audit | Minimized, filterable platform audit-event view without raw before/after payloads | `GET /api/v1/admin/audit-events` |
@@ -117,6 +118,10 @@ operator confirmation under the shared project workflow.
 - Privacy request queue.
 - Privacy-safe analytics dashboard with period selection, KPI cards, daily activity, and top organization/campaign/product tables.
 - Operations drill-down tables with URL-persisted filters and server-side pagination.
+- Seller snapshot drill-down links from seller, product, register, and business
+  location operations rows.
+- Buyer purchase history with category metadata, bounded ten-item pagination,
+  and a weekday-by-hour local-time heatmap for completed purchases.
 - Reconciliation dashboard with severity/type filters and safe operational references.
 - Audit, alerts, fraud-signal, export, performance, inventory, and freshness pages.
 
