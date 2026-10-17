@@ -215,6 +215,7 @@ export interface AdminBuyer {
 export interface BuyerPurchaseItem {
   sku: string;
   name: string;
+  category: string;
   quantity: string;
   unit: string;
   unitPriceMinor: number;
@@ -268,7 +269,7 @@ export interface BuyerInsights {
   preferredBrands: { brand: string; purchaseCount: number; lineCount: number; spendMinor: number }[];
   categoryFrequency: { category: string; purchaseCount: number; sharePct: number; quantity: number; averageDaysBetween: number; lastBoughtAt: string }[];
   frequentlyTogether: { productA: string; productB: string; basketsTogether: number }[];
-  timing: { timezone: string; byDay: { label: string; purchases: number; sharePct: number }[]; byHour: { label: string; purchases: number; sharePct: number }[] };
+  timing: { timezone: string; byDay: { label: string; purchases: number; sharePct: number }[]; byHour: { label: string; purchases: number; sharePct: number }[]; heatmap: { day: number; hour: number; purchases: number; sharePct: number }[] };
   priceSensitivity: { discountedPurchases: number; fullPricePurchases: number; discountedSharePct: number; averageDiscountMinor: number; averageDiscountRatePct: number };
   reorderCycle: { averageDays: number; medianDays: number; purchases: number };
   offerAttribution: { available: boolean; message: string };
