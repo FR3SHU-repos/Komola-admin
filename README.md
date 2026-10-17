@@ -26,6 +26,9 @@ Implemented with the current API:
 - Read-only admin audit log, operational alerts, fraud/abuse review signals,
   and bounded CSV exports for sales, sellers, products, and buyer wallet
   aggregates.
+- Clickable inventory category drill-downs with completed-sale product lines,
+  seller and locality context, line value, purchase date/time, and masked
+  buyer identity links.
 
 The implemented and planned admin capabilities are documented in
 [`docs/ADMIN-FEATURE-ROADMAP.md`](docs/ADMIN-FEATURE-ROADMAP.md). The roadmap

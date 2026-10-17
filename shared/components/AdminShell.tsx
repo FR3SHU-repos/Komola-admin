@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Activity, AlertTriangle, BarChart3, Boxes, Building2, ChevronRight, Download, FileClock, Gift, Globe2, LayoutDashboard, LineChart, LogOut, PackageSearch, ShieldAlert, ShieldCheck, UserRoundCog } from "lucide-react";
+import { Activity, AlertTriangle, BarChart3, Boxes, Building2, ChevronRight, Download, FileClock, Gift, Globe2, LayoutDashboard, LineChart, LogOut, PackageSearch, ShieldAlert, ShieldCheck, UserRoundCog, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { adminBootstrap, type AdminBootstrap } from "@/shared/lib/api/admin";
 import { createAuthBrowserClient } from "@/shared/lib/supabase/auth-client";
@@ -10,6 +10,7 @@ import { createAuthBrowserClient } from "@/shared/lib/supabase/auth-client";
 const coreNav = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/organizations", label: "Organizations", icon: Building2 },
+  { href: "/buyers", label: "Buyers", icon: Users },
   { href: "/locations", label: "Locations", icon: Globe2 },
   { href: "/privacy", label: "Privacy operations", icon: ShieldCheck },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },

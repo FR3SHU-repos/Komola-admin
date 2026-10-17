@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Boxes, Calculator, ChevronLeft, ChevronRight, Coins, RefreshCw, Search, ShoppingCart, Store, Users } from "lucide-react";
+import { ArrowUpRight, Boxes, Calculator, ChevronLeft, ChevronRight, Coins, RefreshCw, Search, ShoppingCart, Store, Users } from "lucide-react";
 import { ErrorNotice, formatDate, LoadingState, MetricCard, PageHeader, StatusBadge } from "@/shared/components/AdminPrimitives";
 import {
   operationProducts,
@@ -101,7 +102,8 @@ export default function OperationsPage() {
             ? await operationLocations({ search: nextSearch, location: nextLocation, sellerType: nextSellerType, status: nextStatus, limit, offset: nextOffset })
             : await operationWallets({ search: nextSearch, status: nextStatus, limit, offset: nextOffset });
     if (!summaryResult.success || !summaryResult.data || !listResult.success || !listResult.data || (categoryResult && (!categoryResult.success || !categoryResult.data))) {
-      setError(summaryResult.message || listResult.message || "Operations data could not be loaded");
+      const failedResult = !summaryResult.success || !summaryResult.data ? summaryResult : !listResult.success || !listResult.data ? listResult : categoryResult;
+      setError(failedResult?.message || "Operations data could not be loaded");
       setState("error");
       return;
     }
@@ -142,4 +144,4 @@ function ProductTable({ items }: { items: ListedProduct[] }) { return items.leng
 function CategorySummary({ items, selected, onSelect }: { items: ProductCategory[]; selected: string; onSelect: (slug: string) => void }) { return items.length ? <div className="category-summary"><div className="card-title">Products by category</div><p className="card-description">Choose a category to see its products in the table below.</p><div className="category-chips"><button className={`category-chip ${selected === "" ? "selected" : ""}`} onClick={() => onSelect("")}><strong>All categories</strong><span>{number(items.reduce((total, item) => total + item.productCount, 0))} products</span></button>{items.map((item) => <button key={item.slug} className={`category-chip ${selected === item.slug ? "selected" : ""}`} onClick={() => onSelect(item.slug)}><strong>{item.name}</strong><span>{number(item.productCount)} products · {number(item.sellerCount)} sellers</span></button>)}</div></div> : null; }
 function RegisterTable({ items }: { items: AdminRegister[] }) { return items.length ? <table className="admin-table"><thead><tr><th>Register</th><th>Seller</th><th>Locality</th><th>Status</th><th>Shift</th><th>Last opened</th></tr></thead><tbody>{items.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><div className="caption">{item.code}</div></td><td>{item.organizationName}</td><td>{item.locationName}</td><td><StatusBadge value={item.status} /></td><td><StatusBadge value={item.openShift} /></td><td>{formatDate(item.lastOpenedAt)}</td></tr>)}</tbody></table> : <Empty message="No registers found." />; }
 function LocationTable({ items }: { items: AdminBusinessLocation[] }) { return items.length ? <table className="admin-table"><thead><tr><th>Location</th><th>Seller</th><th>Address</th><th>PIN code</th><th>Status</th><th>Created</th></tr></thead><tbody>{items.map((item) => <tr key={item.id}><td><strong>{item.name}</strong><div className="caption">{item.code} · {item.timezone}</div></td><td>{item.organizationName}</td><td>{[item.line1, item.line2, item.city, item.state].filter(Boolean).join(", ") || "—"}</td><td>{item.postalCode || "—"}</td><td><StatusBadge value={item.status} /></td><td>{formatDate(item.createdAt)}</td></tr>)}</tbody></table> : <Empty message="No business locations found." />; }
-function WalletTable({ items }: { items: BuyerWallet[] }) { return items.length ? <table className="admin-table"><thead><tr><th>Buyer</th><th>Available</th><th>Pending</th><th>Reserved</th><th>Lifetime earned</th><th>Redeemed</th><th>Updated</th></tr></thead><tbody>{items.map((item) => <tr key={item.personId}><td><strong>{item.buyerName}</strong><div className="caption">{item.contactMasked}</div></td><td>{number(item.availableCoins)}</td><td>{number(item.pendingCoins)}</td><td>{number(item.reservedCampaignCoins)}</td><td>{number(item.lifetimeEarnedCoins)}</td><td>{number(item.lifetimeRedeemedCoins)}</td><td>{formatDate(item.updatedAt)}</td></tr>)}</tbody></table> : <Empty message="No buyer wallets found." />; }
+function WalletTable({ items }: { items: BuyerWallet[] }) { return items.length ? <table className="admin-table"><thead><tr><th>Buyer</th><th>Available</th><th>Pending</th><th>Reserved</th><th>Lifetime earned</th><th>Redeemed</th><th>Updated</th></tr></thead><tbody>{items.map((item) => <tr key={item.personId}><td><Link className="table-link" href={`/buyers/${item.personId}`}>{item.buyerName} <ArrowUpRight size={13} /></Link><div className="caption">{item.contactMasked}</div></td><td>{number(item.availableCoins)}</td><td>{number(item.pendingCoins)}</td><td>{number(item.reservedCampaignCoins)}</td><td>{number(item.lifetimeEarnedCoins)}</td><td>{number(item.lifetimeRedeemedCoins)}</td><td>{formatDate(item.updatedAt)}</td></tr>)}</tbody></table> : <Empty message="No buyer wallets found." />; }
