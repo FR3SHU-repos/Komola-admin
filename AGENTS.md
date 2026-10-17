@@ -9,6 +9,9 @@ Before starting work, read:
 4. [`../cross-platform-assets/DPDP_DATA_GOVERNANCE.md`](../cross-platform-assets/DPDP_DATA_GOVERNANCE.md)
    before changing privacy, identity, analytics, retention, exports, or admin
    data views.
+5. [`../cross-platform-assets/KOMOLA_UI_UX_DESIGN_SYSTEM.md`](../cross-platform-assets/KOMOLA_UI_UX_DESIGN_SYSTEM.md)
+   before creating or changing any screen, component, interaction, or visual
+   theme.
 
 ## Non-negotiable boundaries
 
