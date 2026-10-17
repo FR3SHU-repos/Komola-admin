@@ -23,6 +23,8 @@ Implemented with the current API:
 - Shared operations filters, URL-persisted views, and server-side pagination.
 - Seller names in operations tables link to a full seller snapshot page covering
   profile, locations, registers, catalogue/pricing, stock, referrals, and sales.
+- Seller performance rows use the same snapshot link, so performance metrics
+  can be reviewed alongside the seller's underlying operations.
 - Buyer detail pages show category-tagged purchase lines, scrollable purchase
   history with a maximum of ten transactions per page, and a local-time
   weekday-by-hour purchase heatmap.

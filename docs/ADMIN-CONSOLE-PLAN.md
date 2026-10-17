@@ -49,7 +49,7 @@ credentials.
 | Alerts | Read-only privacy-SLA, outbox, and analytics-ingestion alert view | `GET /api/v1/admin/alerts` |
 | Fraud signals | Explainable aggregate review signals for self-referrals, refunds, velocity, and claim bursts | `GET /api/v1/admin/fraud-signals` |
 | Exports | Bounded CSV reports for approved operational datasets | `GET /api/v1/admin/exports/{report}` |
-| Performance | Seller and Rewardor period aggregates with bounded filters and pagination | `GET /api/v1/admin/performance/sellers`, `/admin/performance/rewardors` |
+| Performance | Seller and Rewardor period aggregates with bounded filters and pagination; seller rows link to the full seller snapshot for operational follow-up | `GET /api/v1/admin/performance/sellers`, `/admin/performance/rewardors` |
 | Inventory analytics | Stock health, low/out-of-stock items, movement volume, and fast-moving products | `GET /api/v1/admin/inventory/analytics` |
 | Data health | Analytics watermark, outbox, PostgreSQL pool, and Redis cache snapshot | `GET /api/v1/admin/freshness` |
 
