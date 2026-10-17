@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Activity, AlertTriangle, BarChart3, Boxes, Building2, ChevronRight, Download, FileClock, Gift, Globe2, LayoutDashboard, LineChart, LogOut, PackageSearch, ShieldAlert, ShieldCheck, UserRoundCog, Users } from "lucide-react";
+import { Activity, AlertTriangle, BarChart3, Boxes, Building2, ChevronRight, Download, FileClock, Gift, Globe2, LayoutDashboard, LineChart, LogOut, Menu, PackageSearch, ShieldAlert, ShieldCheck, UserRoundCog, Users, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { adminBootstrap, type AdminBootstrap } from "@/shared/lib/api/admin";
 import { createAuthBrowserClient } from "@/shared/lib/supabase/auth-client";
@@ -33,6 +33,7 @@ export default function AdminShell({ children }: Readonly<{ children: React.Reac
   const router = useRouter();
   const [bootstrap, setBootstrap] = useState<AdminBootstrap | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "denied">("loading");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     void adminBootstrap().then((result) => {
@@ -59,7 +60,11 @@ export default function AdminShell({ children }: Readonly<{ children: React.Reac
       <nav className="admin-nav"><div className="nav-label">Control centre</div>{coreNav.map((item) => { const Icon = item.icon; const active = pathname === item.href || pathname.startsWith(`${item.href}/`); return <Link key={item.href} href={item.href} className={`nav-link ${active ? "active" : ""}`}><Icon size={17} /><span>{item.label}</span></Link>; })}<div className="nav-label" style={{ marginTop: 26 }}>Product surfaces</div><span className="nav-link pending"><UserRoundCog size={17} /><span>Rewardor controls</span><span style={{ marginLeft: "auto", fontSize: 9 }}>API next</span></span><span className="nav-link pending"><ChevronRight size={17} /><span>POS operations</span><span style={{ marginLeft: "auto", fontSize: 9 }}>API next</span></span></nav>
       <div className="sidebar-foot"><p style={{ color: "var(--primary-strong)", fontSize: 12, fontWeight: 900 }}>Protected workspace</p><p className="caption" style={{ marginTop: 6 }}>Every admin decision is enforced and audited by the Go API.</p></div>
     </aside>
-    <div className="mobile-nav">{coreNav.map((item) => { const active = pathname === item.href || pathname.startsWith(`${item.href}/`); return <Link key={item.href} href={item.href} className={`nav-link ${active ? "active" : ""}`}>{item.label}</Link>; })}</div>
-    <main className="admin-main"><header className="admin-topbar"><div><div className="topbar-kicker">KOMOLA / Admin</div><div className="topbar-title">Platform operations</div></div><div className="admin-user"><span className="avatar">{initials(email)}</span><span className="user-email">{email}</span><button className="icon-button" onClick={() => void signOut()} aria-label="Sign out"><LogOut size={15} /></button></div></header><div className="admin-content">{children}</div></main>
+    <div className={`mobile-nav ${mobileMenuOpen ? "open" : ""}`} aria-hidden={!mobileMenuOpen}>
+      <div className="mobile-nav-head"><strong>Control centre</strong><button className="icon-button" onClick={() => setMobileMenuOpen(false)} aria-label="Close navigation"><X size={17} /></button></div>
+      <div className="mobile-nav-links">{coreNav.map((item) => { const Icon = item.icon; const active = pathname === item.href || pathname.startsWith(`${item.href}/`); return <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className={`nav-link ${active ? "active" : ""}`}><Icon size={17} /><span>{item.label}</span></Link>; })}</div>
+    </div>
+    {mobileMenuOpen && <button className="mobile-nav-backdrop" onClick={() => setMobileMenuOpen(false)} aria-label="Close navigation" />}
+    <main className="admin-main"><header className="admin-topbar"><div className="topbar-heading"><div><div className="topbar-kicker">KOMOLA / Admin</div><div className="topbar-title">Platform operations</div></div><button className="icon-button mobile-menu-toggle" onClick={() => setMobileMenuOpen(true)} aria-label="Open navigation"><Menu size={18} /></button></div><div className="admin-user"><span className="avatar">{initials(email)}</span><span className="user-email">{email}</span><button className="icon-button" onClick={() => void signOut()} aria-label="Sign out"><LogOut size={15} /></button></div></header><div className="admin-content">{children}</div></main>
   </div>;
 }
