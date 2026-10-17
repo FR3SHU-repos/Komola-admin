@@ -50,7 +50,7 @@ credentials.
 | Fraud signals | Explainable aggregate review signals for self-referrals, refunds, velocity, and claim bursts | `GET /api/v1/admin/fraud-signals` |
 | Exports | Bounded CSV reports for approved operational datasets | `GET /api/v1/admin/exports/{report}` |
 | Performance | Seller and Rewardor period aggregates with bounded filters and pagination; seller rows link to the full seller snapshot for operational follow-up | `GET /api/v1/admin/performance/sellers`, `/admin/performance/rewardors` |
-| Inventory analytics | Stock health, low/out-of-stock items, movement volume, and fast-moving products | `GET /api/v1/admin/inventory/analytics` |
+| Inventory analytics | Stock health, low/out-of-stock items, movement volume, and fast-moving products; seller and category labels link to operational detail pages | `GET /api/v1/admin/inventory/analytics` |
 | Data health | Analytics watermark, outbox, PostgreSQL pool, and Redis cache snapshot | `GET /api/v1/admin/freshness` |
 
 All mutations require an authenticated platform admin and explicit UI intent.
@@ -102,6 +102,12 @@ NEXT_PUBLIC_KOMOLA_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_KOMOLA_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 GO_API_BASE_URL=http://localhost:8080
 ```
+
+Supabase URL and publishable key values are intentionally exposed to the
+browser for Auth initialization and must not be service-role secrets. Keep
+them in Netlify environment settings; `netlify.toml` omits only these public
+keys from Netlify secret scanning. Admin credentials belong to Supabase Auth
+and must not be embedded in source or build output.
 
 The authenticated user must be represented in `identity.platform_admins` in the
 backend environment. Database changes or direct data changes require explicit

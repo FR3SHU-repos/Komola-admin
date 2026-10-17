@@ -25,6 +25,8 @@ Implemented with the current API:
   profile, locations, registers, catalogue/pricing, stock, referrals, and sales.
 - Seller performance rows use the same snapshot link, so performance metrics
   can be reviewed alongside the seller's underlying operations.
+- Seller and category labels across dashboard, analytics, inventory, buyer
+  footprints, and seller views link to their corresponding detail pages.
 - Buyer detail pages show category-tagged purchase lines, scrollable purchase
   history with a maximum of ten transactions per page, and a local-time
   weekday-by-hour purchase heatmap.
@@ -64,6 +66,13 @@ NEXT_PUBLIC_KOMOLA_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_KOMOLA_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 GO_API_BASE_URL=http://localhost:8080
 ```
+
+The Supabase URL and publishable key are browser-visible client configuration;
+they are not service-role credentials. Keep their real values in Netlify
+environment settings, and do not mark them as secret values there. The
+repository's `netlify.toml` excludes only these two public keys from Netlify's
+secret-value scan. Admin email/password credentials are managed by Supabase
+Auth and must never be placed in client code or committed files.
 
 Then run:
 

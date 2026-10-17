@@ -1,0 +1,4 @@
+[build.environment]
+  # These values are intentionally browser-visible Supabase configuration,
+  # not service-role credentials. Keep the actual values in Netlify settings.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_KOMOLA_SUPABASE_URL,NEXT_PUBLIC_KOMOLA_SUPABASE_PUBLISHABLE_KEY"
