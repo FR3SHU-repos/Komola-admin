@@ -337,7 +337,7 @@ For every new feature:
 
 ## Privacy and DPDP guardrails
 
-These features must follow `../cross-platform-assets/DPDP_DATA_GOVERNANCE.md`.
+These features must follow `../cross-platform-assets/common/DPDP_DATA_GOVERNANCE.md`.
 
 - Define the purpose before collecting or deriving a metric.
 - Minimize, mask, aggregate, or coarsen personal data wherever possible.
