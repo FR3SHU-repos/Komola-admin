@@ -23,14 +23,31 @@ export default function DashboardPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    void Promise.all([adminApi.organizations(), adminApi.locations(), adminApi.privacyRequests()]).then(([orgResult, locationResult, privacyResult]) => {
+    const controller = new AbortController();
+    let active = true;
+
+    Promise.all([
+      adminApi.organizations("", "", { signal: controller.signal }),
+      adminApi.locations({ signal: controller.signal }),
+      adminApi.privacyRequests("", { signal: controller.signal }),
+    ]).then(([orgResult, locationResult, privacyResult]) => {
+      if (!active) return;
       const failed = [orgResult, locationResult, privacyResult].find((result) => !result.success);
       if (failed) setError(failed.message);
       setOrganizations(orgResult.data?.items ?? []);
       setLocations(locationResult.data?.items ?? []);
       setPrivacy(privacyResult.data?.items ?? []);
-      setLoading(false);
+    }).catch((reason: unknown) => {
+      if (!active || controller.signal.aborted) return;
+      setError(reason instanceof Error ? reason.message : "Dashboard data could not be loaded");
+    }).finally(() => {
+      if (active) setLoading(false);
     });
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
   }, []);
 
   const active = organizations.filter((item) => item.status === "active").length;

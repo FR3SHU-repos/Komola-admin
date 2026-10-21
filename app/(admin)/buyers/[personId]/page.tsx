@@ -61,16 +61,29 @@ export default function BuyerDetailPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
     let active = true;
     setPurchasePage(1);
-    void Promise.all([operationBuyer(params.personId), operationBuyerInsights(params.personId)]).then(([response, insightResponse]) => {
+    setState("loading");
+    setError("");
+    Promise.all([
+      operationBuyer(params.personId, { signal: controller.signal }),
+      operationBuyerInsights(params.personId, { signal: controller.signal }),
+    ]).then(([response, insightResponse]) => {
       if (!active) return;
       if (!response.success || !response.data) { setError(response.message || "Buyer profile could not be loaded"); setState("error"); return; }
       setDetail(response.data);
       setInsights(insightResponse.success ? insightResponse.data || null : null);
       setState("ready");
+    }).catch((reason: unknown) => {
+      if (!active || controller.signal.aborted) return;
+      setError(reason instanceof Error ? reason.message : "Buyer profile could not be loaded");
+      setState("error");
     });
-    return () => { active = false; };
+    return () => {
+      active = false;
+      controller.abort();
+    };
   }, [params.personId]);
 
   if (state === "loading") return <><div className="detail-back"><Link href="/buyers"><ArrowLeft size={15} /> Back to buyers</Link></div><LoadingState label="Loading buyer profile and purchase history…" /></>;

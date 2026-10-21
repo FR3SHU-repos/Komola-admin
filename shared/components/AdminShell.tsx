@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Activity, AlertTriangle, BarChart3, Boxes, Building2, ChevronRight, Download, FileClock, Gift, Globe2, LayoutDashboard, LineChart, LogOut, Menu, PackageSearch, ShieldAlert, ShieldCheck, UserRoundCog, Users, X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { adminBootstrap, type AdminBootstrap } from "@/shared/lib/api/admin";
+import { useEffect, useRef, useState } from "react";
+import { adminBootstrap, clearAdminBootstrapCache, type AdminBootstrap } from "@/shared/lib/api/admin";
 import { createAuthBrowserClient } from "@/shared/lib/supabase/auth-client";
+import { ErrorNotice } from "@/shared/components/AdminPrimitives";
 
 const coreNav = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
@@ -31,20 +32,38 @@ function initials(value: string) { return value.split(/[ @]/).filter(Boolean).sl
 export default function AdminShell({ children }: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname();
   const router = useRouter();
+  const initialPathname = useRef(pathname);
   const [bootstrap, setBootstrap] = useState<AdminBootstrap | null>(null);
-  const [state, setState] = useState<"loading" | "ready" | "denied">("loading");
+  const [state, setState] = useState<"loading" | "ready" | "denied" | "error">("loading");
+  const [error, setError] = useState("");
+  const [verificationAttempt, setVerificationAttempt] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    void adminBootstrap().then((result) => {
-      if (!result.success || result.status === 401) { router.replace(`/login?next=${encodeURIComponent(pathname)}`); return; }
-      if (result.status === 403 || result.data?.user?.role !== "Admin") { setState("denied"); return; }
+    const controller = new AbortController();
+    let active = true;
+
+    adminBootstrap({ signal: controller.signal }).then((result) => {
+      if (!active) return;
+      if (result.status === 401) { router.replace(`/login?next=${encodeURIComponent(initialPathname.current)}`); return; }
+      if (!result.success || !result.data) { setError(result.message || "Platform-admin access could not be verified."); setState("error"); return; }
+      if (result.status === 403 || result.data.user?.role !== "Admin") { setState("denied"); return; }
       setBootstrap(result.data);
       setState("ready");
+    }).catch(() => {
+      if (!active) return;
+      setError("Platform-admin access could not be verified. Please try again.");
+      setState("error");
     });
-  }, [pathname, router]);
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [router, verificationAttempt]);
 
   async function signOut() {
+    clearAdminBootstrapCache();
     await createAuthBrowserClient().auth.signOut();
     router.replace("/login");
     router.refresh();
@@ -52,6 +71,7 @@ export default function AdminShell({ children }: Readonly<{ children: React.Reac
 
   if (state === "loading") return <div className="login-page"><div className="card" style={{ width: "min(100%, 430px)", textAlign: "center" }}><span className="login-mark" style={{ margin: "0 auto" }}><ShieldCheck size={27} /></span><p style={{ margin: "17px 0 0", color: "var(--muted)", fontSize: 13 }}>Verifying platform-admin access…</p></div></div>;
   if (state === "denied") return <div className="login-page"><div className="card" style={{ width: "min(100%, 480px)", textAlign: "center" }}><span className="login-mark" style={{ margin: "0 auto", background: "var(--danger)" }}><ShieldCheck size={27} /></span><h1 style={{ margin: "18px 0 0", color: "var(--primary-strong)", fontSize: 26, fontWeight: 900 }}>Platform access required</h1><p style={{ margin: "10px 0 0", color: "var(--muted)", fontSize: 13, lineHeight: 1.6 }}>Your identity is valid, but it is not in the platform-admin allowlist.</p><button className="secondary-button" style={{ marginTop: 22 }} onClick={() => void signOut()}>Sign out</button></div></div>;
+  if (state === "error") return <div className="login-page"><div className="card" style={{ width: "min(100%, 480px)" }}><span className="login-mark" style={{ margin: "0 auto" }}><ShieldCheck size={27} /></span><h1 style={{ margin: "18px 0 0", color: "var(--primary-strong)", fontSize: 26, fontWeight: 900, textAlign: "center" }}>Access check unavailable</h1><div style={{ marginTop: 18 }}><ErrorNotice message={error} /></div><button className="primary-button" style={{ marginTop: 18, width: "100%" }} onClick={() => { setError(""); setState("loading"); setVerificationAttempt((attempt) => attempt + 1); }}>Try again</button></div></div>;
 
   const email = bootstrap?.user?.email ?? "Platform administrator";
   return <div className="admin-shell">

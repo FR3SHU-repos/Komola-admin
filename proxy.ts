@@ -4,9 +4,10 @@ import { NextResponse, type NextRequest } from "next/server";
 const supabaseURL = process.env.NEXT_PUBLIC_KOMOLA_SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const supabaseKey = process.env.NEXT_PUBLIC_KOMOLA_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
   if (!supabaseURL || !supabaseKey || request.nextUrl.pathname === "/login" || request.nextUrl.pathname.startsWith("/auth/") || request.nextUrl.pathname.startsWith("/api/")) return response;
+
   const supabase = createServerClient(supabaseURL, supabaseKey, {
     cookies: {
       getAll: () => request.cookies.getAll(),
