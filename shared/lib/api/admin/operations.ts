@@ -1,0 +1,23 @@
+import { request, type ApiResult } from "../client";
+import { adminListQuery, operationQuery } from "./query";
+import type { AdminAlert, AdminAuditEvent, AdminBusinessLocation, AdminBuyer, AdminBuyerDetail, AdminRegister, AdminSeller, AdminSignal, AdminSignalResult, BuyerInsights, BuyerWallet, InventoryAnalytics, InventoryCategoryDetails, ListedProduct, OperationsList, OperationsSummary, ProductCategory, ReconciliationResult, RewardorCampaign, RewardorPerformance, SellerPerformance, SellerSnapshot } from "./types";
+
+export function rewardorCampaigns(params: { search?: string; status?: string; campaignType?: string; limit?: number; offset?: number } = {}, init: RequestInit = {}): Promise<ApiResult<OperationsList<RewardorCampaign>>> { return request(`admin/reward-campaigns${operationQuery(params)}`, init); }
+export function operationsSummary(days = 30): Promise<ApiResult<OperationsSummary>> { return request(`admin/operations/summary?days=${days}`); }
+export type OperationQuery = { search?: string; category?: string; location?: string; sellerType?: string; status?: string; limit?: number; offset?: number; days?: number };
+export function operationProducts(params: OperationQuery = {}): Promise<ApiResult<OperationsList<ListedProduct> & { category?: string }>> { return request(`admin/operations/products${operationQuery(params)}`); }
+export function operationCategories(): Promise<ApiResult<{ items: ProductCategory[] }>> { return request("admin/operations/categories"); }
+export function operationRegisters(params: OperationQuery = {}): Promise<ApiResult<OperationsList<AdminRegister>>> { return request(`admin/operations/registers${operationQuery(params)}`); }
+export function operationLocations(params: OperationQuery = {}): Promise<ApiResult<OperationsList<AdminBusinessLocation>>> { return request(`admin/operations/locations${operationQuery(params)}`); }
+export function operationSellers(params: OperationQuery = {}): Promise<ApiResult<OperationsList<AdminSeller>>> { return request(`admin/operations/sellers${operationQuery(params)}`); }
+export function sellerSnapshot(organizationId: string, days = 30): Promise<ApiResult<SellerSnapshot>> { return request(`admin/operations/sellers/${encodeURIComponent(organizationId)}/snapshot?days=${days}`); }
+export function operationWallets(params: OperationQuery = {}): Promise<ApiResult<OperationsList<BuyerWallet>>> { return request(`admin/operations/wallets${operationQuery(params)}`); }
+export function operationBuyers(params: { search?: string; status?: string; limit?: number; offset?: number } = {}): Promise<ApiResult<OperationsList<AdminBuyer>>> { return request(`admin/operations/buyers${adminListQuery(params)}`); }
+export function operationBuyer(personId: string, init: RequestInit = {}): Promise<ApiResult<AdminBuyerDetail>> { return request(`admin/operations/buyers/${encodeURIComponent(personId)}`, init); }
+export function operationBuyerInsights(personId: string, init: RequestInit = {}): Promise<ApiResult<BuyerInsights>> { return request(`admin/operations/buyers/${encodeURIComponent(personId)}/insights`, init); }
+export function reconciliation(params: { type?: string; severity?: string; limit?: number; offset?: number } = {}, init: RequestInit = {}): Promise<ApiResult<ReconciliationResult>> { return request(`admin/reconciliation${operationQuery(params)}`, init); }
+export function sellerPerformance(params: { days?: number; search?: string; location?: string; sellerType?: string; status?: string; limit?: number; offset?: number } = {}): Promise<ApiResult<OperationsList<SellerPerformance> & { summary?: { organizations: number; days: number } }>> { return request(`admin/performance/sellers${adminListQuery(params)}`); }
+export function rewardorPerformance(params: { days?: number; search?: string; status?: string; limit?: number; offset?: number } = {}): Promise<ApiResult<OperationsList<RewardorPerformance> & { summary?: { organizations: number; days: number } }>> { return request(`admin/performance/rewardors${adminListQuery(params)}`); }
+export function inventoryAnalytics(params: { days?: number; search?: string; category?: string; location?: string; sellerType?: string; limit?: number; offset?: number } = {}, init: RequestInit = {}): Promise<ApiResult<InventoryAnalytics>> { return request(`admin/inventory/analytics${adminListQuery(params)}`, init); }
+export function inventoryCategoryDetails(params: { category: string; days?: number; limit?: number; offset?: number }): Promise<ApiResult<InventoryCategoryDetails>> { return request(`admin/inventory/category-details${adminListQuery(params)}`); }
+export function freshness(init: RequestInit = {}): Promise<ApiResult<import("./types").FreshnessResult>> { return request("admin/freshness", init); }

@@ -106,8 +106,8 @@ mutation is part of the admin analytics work documented here.
 
 ## Source of truth
 
-- Shared agent workflow: `../cross-platform-assets/AGENT_WORKFLOW.md`
-- Privacy baseline: `../cross-platform-assets/DPDP_DATA_GOVERNANCE.md`
+- Shared agent workflow: `../cross-platform-assets/common/AGENT_WORKFLOW.md`
+- Privacy baseline: `../cross-platform-assets/common/DPDP_DATA_GOVERNANCE.md`
 - API contract: `../go-api-backend/openapi/openapi.yaml`
 - Current API routes: `../go-api-backend/docs/api-current.md`
 - Backend runtime: `../go-api-backend/docs/system-reference.md`

@@ -2,14 +2,14 @@
 
 Before starting work, read:
 
-1. [`../cross-platform-assets/AGENT_WORKFLOW.md`](../cross-platform-assets/AGENT_WORKFLOW.md).
+1. [`../cross-platform-assets/common/AGENT_WORKFLOW.md`](../cross-platform-assets/common/AGENT_WORKFLOW.md).
 2. [`README.md`](README.md).
 3. [`../go-api-backend/docs/api-current.md`](../go-api-backend/docs/api-current.md)
    and [`../go-api-backend/openapi/openapi.yaml`](../go-api-backend/openapi/openapi.yaml).
-4. [`../cross-platform-assets/DPDP_DATA_GOVERNANCE.md`](../cross-platform-assets/DPDP_DATA_GOVERNANCE.md)
+4. [`../cross-platform-assets/common/DPDP_DATA_GOVERNANCE.md`](../cross-platform-assets/common/DPDP_DATA_GOVERNANCE.md)
    before changing privacy, identity, analytics, retention, exports, or admin
    data views.
-5. [`../cross-platform-assets/KOMOLA_UI_UX_DESIGN_SYSTEM.md`](../cross-platform-assets/KOMOLA_UI_UX_DESIGN_SYSTEM.md)
+5. [`../cross-platform-assets/common/KOMOLA_UI_UX_DESIGN_SYSTEM.md`](../cross-platform-assets/common/KOMOLA_UI_UX_DESIGN_SYSTEM.md)
    before creating or changing any screen, component, interaction, or visual
    theme.
 

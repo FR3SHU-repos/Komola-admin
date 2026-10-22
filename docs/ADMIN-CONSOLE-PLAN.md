@@ -76,8 +76,8 @@ Do not make the admin app call an organization-scoped route with a guessed
 
 ## Security and privacy rules
 
-1. Read `../cross-platform-assets/AGENT_WORKFLOW.md` and
-   `../cross-platform-assets/DPDP_DATA_GOVERNANCE.md` before changing this app.
+1. Read `../cross-platform-assets/common/AGENT_WORKFLOW.md` and
+   `../cross-platform-assets/common/DPDP_DATA_GOVERNANCE.md` before changing this app.
 2. Keep Supabase service-role keys, database URLs, and Redis credentials out of
    browser code and `NEXT_PUBLIC_*` variables.
 3. Show only the minimum personal data needed for the operator task. Prefer
