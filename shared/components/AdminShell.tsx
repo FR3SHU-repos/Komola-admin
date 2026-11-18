@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Activity, AlertTriangle, BarChart3, Boxes, Building2, ChevronRight, Download, FileClock, Gift, Globe2, LayoutDashboard, LineChart, LogOut, Menu, PackageSearch, ShieldAlert, ShieldCheck, UserRoundCog, Users, X } from "lucide-react";
+import { Activity, AlertTriangle, BarChart3, Bell, Boxes, Building2, ChevronRight, Download, FileClock, Gift, Globe2, LayoutDashboard, LineChart, LogOut, Menu, PackageSearch, ShieldAlert, ShieldCheck, UserRoundCog, Users, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { adminBootstrap, clearAdminBootstrapCache, type AdminBootstrap } from "@/shared/lib/api/admin";
 import { createAuthBrowserClient } from "@/shared/lib/supabase/auth-client";
@@ -25,6 +25,7 @@ const coreNav = [
   { href: "/inventory", label: "Inventory analytics", icon: PackageSearch },
   { href: "/freshness", label: "Data health", icon: Activity },
   { href: "/rewardor-rewards", label: "Rewardor rewards", icon: Gift },
+  { href: "/notifications", label: "Notifications", icon: Bell },
 ];
 
 function initials(value: string) { return value.split(/[ @]/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "KA"; }

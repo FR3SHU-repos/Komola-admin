@@ -3,10 +3,12 @@ export * from "./access";
 export * from "./analytics";
 export * from "./operations";
 export * from "./governance";
+export * from "./notifications";
 
 import { adminBootstrap, createLocation, deleteLocation, editLocation, locations, organizations, privacyRequests, updateLocation, updateOrganization, updatePrivacyRequest } from "./access";
 import { adminOverview, rewardAnalytics, salesAnalytics } from "./analytics";
 import { alerts, auditEvents, downloadAdminExport, fraudSignals } from "./governance";
+import { cancelNotificationCampaign, createNotificationCampaign, notificationCampaigns, sendNotificationCampaign } from "./notifications";
 import { freshness, inventoryAnalytics, inventoryCategoryDetails, operationBuyer, operationBuyerInsights, operationBuyers, operationCategories, operationLocations, operationProducts, operationRegisters, operationSellers, operationWallets, operationsSummary, reconciliation, rewardorCampaigns, rewardorPerformance, sellerPerformance, sellerSnapshot } from "./operations";
 
 export const adminApi = {
@@ -45,4 +47,8 @@ export const adminApi = {
   inventoryAnalytics,
   inventoryCategoryDetails,
   freshness,
+  notificationCampaigns,
+  createNotificationCampaign,
+  sendNotificationCampaign,
+  cancelNotificationCampaign,
 };
